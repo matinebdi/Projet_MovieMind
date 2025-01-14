@@ -150,36 +150,11 @@ def connect_to_db(db_path="data/chroma.sqlite3"):
         st.error(f"Erreur lors de la connexion à la base de données : {e}")
         return None
 
-
-def load_movies_from_db(db_path="data/chroma.sqlite3"):
-def load_movies_from_db(db_path="data/chroma.sqlite3"):
-    """
-    Charge les films depuis la base SQLite et retourne un DataFrame.
-    """
-    try:
-        conn = sqlite3.connect(db_path)
-        query = "SELECT title, overview, genres FROM movies"  
-        df = pd.read_sql_query(query, conn)
-        conn.close()
-        return df
-    except Exception as e:
-        return pd.DataFrame(), f"Erreur lors du chargement des films : {str(e)}"
-    
 def call_chatbot():
     from utils.chatbot import get_embeddings, get_conversation_chain, get_vectorstore
     
     # Tout le contenu de la sidebar
-    
-    # Tout le contenu de la sidebar
     with st.sidebar:
-        st.title("Chatbot 🤖")
-        
-        # Initialisation des variables de session
-        if "conversation" not in st.session_state:
-            st.session_state.conversation = None
-        if "chat_history" not in st.session_state:
-            st.session_state.chat_history = []
-
         st.title("Chatbot 🤖")
         
         # Initialisation des variables de session
@@ -192,17 +167,12 @@ def call_chatbot():
         st.markdown("""
         ### 👋 Bienvenue dans votre assistant de film
         Vous n'avez pas d'idée ? Nous sommes là pour vous proposer un film !
-        ### 👋 Bienvenue dans votre assistant de film
-        Vous n'avez pas d'idée ? Nous sommes là pour vous proposer un film !
         """)
-
 
         # Champ de saisie utilisateur
         user_input = st.text_input(
             "Que souhaitez-vous comme film ?",
-            "Que souhaitez-vous comme film ?",
             key="user_input", 
-            placeholder="Posez-moi des questions sur les films"
             placeholder="Posez-moi des questions sur les films"
         )
         
