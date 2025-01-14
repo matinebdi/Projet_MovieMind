@@ -15,7 +15,7 @@ utilisable par notre assistant culinaire. Il utilise plusieurs concepts clés :
 """
 
 import pandas as pd
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores import DocArrayInMemorySearch
 from langchain_openai import OpenAIEmbeddings
 from langchain.schema import Document
 from typing import List
@@ -27,11 +27,10 @@ load_dotenv()
 
 def create_vectorstore(texts):
     """
-    Crée un vectorstore FAISS à partir des textes donnés
+    Crée un vectorstore DocArrayInMemorySearch à partir des textes donnés
     """
     embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
-    vectorstore = FAISS.from_texts(texts, embeddings)
-    save_vectorstore(vectorstore)
+    vectorstore = DocArrayInMemorySearch.from_texts(texts, embeddings)
     return vectorstore
 
 def save_vectorstore(vectorstore, path="data/vectorstore"):
@@ -50,7 +49,7 @@ def load_vectorstore(path="data/vectorstore"):
         return FAISS.load_local(
             path, 
             embeddings,
-            allow_dangerous_deserialization=True  # À utiliser uniquement si vous faites confiance à la source du fichier
+            allow_dangerous_deserialization=True  # Ce paramètre permet la désérialisation non sécurisée des données. À utiliser uniquement avec des fichiers de confiance car il peut y avoir des risques de sécurité
         )
     except FileNotFoundError:
         return None
